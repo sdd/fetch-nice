@@ -2,6 +2,7 @@
   "name": "fetch-nice",
   "version": "1.0.0",
   "description": "A helpful fetch wrapper",
+  "author": "Scott Donnelly",
   "main": "index.js",
   "scripts": {
     "test": "ava"
@@ -11,8 +12,15 @@
     "whatwg-fetch",
     "isomorphic-fetch"
   ],
-  "author": "Scott Donnelly",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sdd/fetch-nice.git"
+  },
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sdd/fetch-nice/issues"
+  },
+  "homepage": "https://github.com/sdd/fetch-nice",
   "devDependencies": {
     "ava": "^0.19.1",
     "ava-spec": "^1.1.0"
