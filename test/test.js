@@ -2,7 +2,7 @@ global.fetch = require('node-fetch');
 
 import { describe } from 'ava-spec';
 import nock from 'nock';
-import niceFetch from '../index';
+import niceFetch from '../src/index';
 
 const url = `http://test.com/`;
 
