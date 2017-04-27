@@ -1,5 +1,7 @@
 # fetch-nice
 
+[![Travis](https://img.shields.io/travis/sdd/fetch-nice.svg)]() [![npm](https://img.shields.io/npm/v/fetch-nice.svg)]() [![npm](https://img.shields.io/npm/l/fetch-nice.svg)]() [![David](https://img.shields.io/david/sdd/fetch-nice.svg)]()
+
 A thin wrapper around fetch to take care of some common use cases in the browser.
 
 NB This does not handle polyfilling fetch. If you are using this in a browser that does not implement HTML5 Fetch API
