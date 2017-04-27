@@ -3,9 +3,19 @@
   "version": "1.0.0",
   "description": "A helpful fetch wrapper",
   "author": "Scott Donnelly",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "src/index.js",
   "scripts": {
-    "test": "ava"
+    "test": "ava",
+    "test:watch": "ava -w",
+    "build": "babel src --out-dir dist",
+    "prepublish": "npm run build"
+  },
+  "ava": {
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
   },
   "keywords": [
     "fetch",
@@ -21,8 +31,15 @@
     "url": "https://github.com/sdd/fetch-nice/issues"
   },
   "homepage": "https://github.com/sdd/fetch-nice",
+  "dependencies": {
+    "boom": "^4.3.1"
+  },
   "devDependencies": {
     "ava": "^0.19.1",
-    "ava-spec": "^1.1.0"
+    "ava-spec": "^1.1.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "nock": "^9.0.13",
+    "node-fetch": "^1.6.3"
   }
 }

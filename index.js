@@ -1,28 +1,26 @@
-const d = require('debug')('fetch-nice');
+import debug from 'debug';
+import Boom from 'boom';
+const d = debug('fetch-nice');
 
-var defaults = {
+const defaults = {
     headers: {
         'Accept': 'application/json'
     },
     credentials: 'include'
 };
-var methods = ['get', 'post', 'put', 'delete'];
+const methods = ['get', 'post', 'put', 'delete'];
 
-function fetchNice(url, options) {
+export default function fetchNice(url, options) {
     return doFetchNice(url, options);
 };
 
-methods.forEach(function(method) {
-    fetchNice[method] = function(url, options) {
-        const optionsToMerge = options || {};
-        return doFetchNice(url, Object.assign(optionsToMerge, { method: method }));
-    }
+methods.forEach(method => {
+    fetchNice[method] = (url, options = {}) =>
+        doFetchNice(url, { ...options, method })
 });
 
-module.exports = fetchNice;
-
-function doFetchNice(url, options) {
-    var requestOptions = Object.assign({}, defaults, options);
+async function doFetchNice(url, options) {
+    const requestOptions = { ...defaults, ...options };
 
     if (requestOptions.body && !requestOptions.formData) {
         requestOptions.body = JSON.stringify(requestOptions.body);
@@ -32,45 +30,29 @@ function doFetchNice(url, options) {
     d('url:', url);
     d('options:', requestOptions);
 
-    return fetch(url, requestOptions)
-        .then(function(response) {
+    const response = await fetch(url, requestOptions);
+    d('response: ', response);
 
-            d('response: ', response);
-
-            if (!response.ok) {
-                throw createFetchError(response);
-            }
-
-            if (response.status === 204) {
-                return Object.assign(response,
-                    { json: function() { return Promise.resolve(undefined); } }
-                );
-            }
-            return response;
-        })
-        .then(function(response) {
-            return response.json();
-        });
-};
-
-function createFetchError(response) {
-    var error;
-    switch(response.status) {
-        case 404:
-            error = new NotFoundError();
-            break;
-        case 401:
-            error = new UnauthorizedError();
-            break;
-        case 403:
-            error = new ForbiddenError();
-            break;
-        case 500:
-            error = new ServerError();
-            break;
-        default:
-            error = new Error();
+    if (!response.ok) {
+        throw await createFetchError(response);
     }
 
-    return error;
+    if (response.status === 204) {
+        return undefined;
+    }
+
+    return await response.json();
+};
+
+async function createFetchError(response) {
+
+    let message, data;
+    try {
+        data = await response.json();
+        message = data.message || data.error;
+    } catch(e) {
+
+    }
+
+    return Boom.create(response.status, message, data);
 }
