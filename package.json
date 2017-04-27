@@ -9,7 +9,7 @@
     "test": "ava",
     "test:watch": "ava -w",
     "build": "babel src --out-dir dist",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "ava": {
     "require": [
