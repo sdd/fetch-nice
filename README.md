@@ -3,7 +3,7 @@
 A thin wrapper around fetch to take care of some common use cases in the browser.
 
 NB This does not handle polyfilling fetch. If you are using this in a browser that does not implement HTML5 Fetch API
- then you will need to polyfill with something like `whatwg-fetch` or it will not work.
+ then you will need to polyfill with something like [`whatwg-fetch`](https://www.npmjs.com/package/whatwg-fetch) or it will not work.
  
 ## Installation
 
