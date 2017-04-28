@@ -3,6 +3,19 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
+var _assign = require('babel-runtime/core-js/object/assign');
+
+var _assign2 = _interopRequireDefault(_assign);
+
 exports.default = fetchNice;
 
 var _debug = require('debug');
@@ -15,7 +28,7 @@ var _boom2 = _interopRequireDefault(_boom);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _marked = [doFetchNice, createFetchError].map(regeneratorRuntime.mark);
+var _marked = [doFetchNice, createFetchError].map(_regenerator2.default.mark);
 
 var d = (0, _debug2.default)('fetch-nice');
 
@@ -34,21 +47,21 @@ function fetchNice(url, options) {
 methods.forEach(function (method) {
     fetchNice[method] = function (url) {
         var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-        return doFetchNice(url, Object.assign({}, options, { method: method }));
+        return doFetchNice(url, (0, _assign2.default)({}, options, { method: method }));
     };
 });
 
 function doFetchNice(url, options) {
     var requestOptions, response;
-    return regeneratorRuntime.wrap(function doFetchNice$(_context) {
+    return _regenerator2.default.wrap(function doFetchNice$(_context) {
         while (1) {
             switch (_context.prev = _context.next) {
                 case 0:
-                    requestOptions = Object.assign({}, defaults, options);
+                    requestOptions = (0, _assign2.default)({}, defaults, options);
 
 
                     if (requestOptions.body && !requestOptions.formData) {
-                        requestOptions.body = JSON.stringify(requestOptions.body);
+                        requestOptions.body = (0, _stringify2.default)(requestOptions.body);
                         requestOptions.headers['Content-Type'] = 'application/json';
                     }
 
@@ -99,7 +112,7 @@ function doFetchNice(url, options) {
 
 function createFetchError(response) {
     var message, data;
-    return regeneratorRuntime.wrap(function createFetchError$(_context2) {
+    return _regenerator2.default.wrap(function createFetchError$(_context2) {
         while (1) {
             switch (_context2.prev = _context2.next) {
                 case 0:

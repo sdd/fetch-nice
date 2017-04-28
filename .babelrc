@@ -4,6 +4,7 @@
   ],
   "plugins": [
     ["transform-object-rest-spread", { "useBuiltIns": true }],
-    "transform-async-to-plain-generator"
+    "transform-async-to-plain-generator",
+    "transform-runtime"
   ]
 }
