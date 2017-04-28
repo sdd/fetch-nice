@@ -42,7 +42,7 @@ async function doFetchNice(url, options) {
     }
 
     return await response.json();
-};
+}
 
 async function createFetchError(response) {
 

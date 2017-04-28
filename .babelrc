@@ -4,7 +4,7 @@
   ],
   "plugins": [
     ["transform-object-rest-spread", { "useBuiltIns": true }],
-    "transform-async-to-plain-generator",
+    "babel-plugin-async-to-promises",
     "transform-runtime"
   ]
 }

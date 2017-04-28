@@ -4,10 +4,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _regenerator = require('babel-runtime/regenerator');
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
 var _stringify = require('babel-runtime/core-js/json/stringify');
 
 var _stringify2 = _interopRequireDefault(_stringify);
@@ -27,8 +23,6 @@ var _boom = require('boom');
 var _boom2 = _interopRequireDefault(_boom);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _marked = [doFetchNice, createFetchError].map(_regenerator2.default.mark);
 
 var d = (0, _debug2.default)('fetch-nice');
 
@@ -53,92 +47,56 @@ methods.forEach(function (method) {
 
 function doFetchNice(url, options) {
     var requestOptions, response;
-    return _regenerator2.default.wrap(function doFetchNice$(_context) {
-        while (1) {
-            switch (_context.prev = _context.next) {
-                case 0:
-                    requestOptions = (0, _assign2.default)({}, defaults, options);
+    return Promise.resolve().then(function () {
+        requestOptions = (0, _assign2.default)({}, defaults, options);
 
 
-                    if (requestOptions.body && !requestOptions.formData) {
-                        requestOptions.body = (0, _stringify2.default)(requestOptions.body);
-                        requestOptions.headers['Content-Type'] = 'application/json';
-                    }
-
-                    d('url:', url);
-                    d('options:', requestOptions);
-
-                    _context.next = 6;
-                    return fetch(url, requestOptions);
-
-                case 6:
-                    response = _context.sent;
-
-                    d('response: ', response);
-
-                    if (response.ok) {
-                        _context.next = 12;
-                        break;
-                    }
-
-                    _context.next = 11;
-                    return createFetchError(response);
-
-                case 11:
-                    throw _context.sent;
-
-                case 12:
-                    if (!(response.status === 204)) {
-                        _context.next = 14;
-                        break;
-                    }
-
-                    return _context.abrupt('return', undefined);
-
-                case 14:
-                    _context.next = 16;
-                    return response.json();
-
-                case 16:
-                    return _context.abrupt('return', _context.sent);
-
-                case 17:
-                case 'end':
-                    return _context.stop();
-            }
+        if (requestOptions.body && !requestOptions.formData) {
+            requestOptions.body = (0, _stringify2.default)(requestOptions.body);
+            requestOptions.headers['Content-Type'] = 'application/json';
         }
-    }, _marked[0], this);
-};
+
+        d('url:', url);
+        d('options:', requestOptions);
+
+        return fetch(url, requestOptions);
+    }).then(function (_resp) {
+        response = _resp;
+
+        d('response: ', response);
+
+        if (!response.ok) {
+            return Promise.resolve().then(function () {
+                return createFetchError(response);
+            }).then(function (_resp) {
+                throw _resp;
+            });
+        }
+    }).then(function () {
+        if (response.status === 204) {
+            return undefined;
+        } else {
+
+            return response.json();
+        }
+    });
+}
 
 function createFetchError(response) {
     var message, data;
-    return _regenerator2.default.wrap(function createFetchError$(_context2) {
-        while (1) {
-            switch (_context2.prev = _context2.next) {
-                case 0:
-                    message = void 0, data = void 0;
-                    _context2.prev = 1;
-                    _context2.next = 4;
-                    return response.json();
+    return Promise.resolve().then(function () {
+        message = void 0;
+        data = void 0;
+        return Promise.resolve().then(function () {
+            return response.json();
+        }).then(function (_resp) {
+            data = _resp;
+            message = data.message || data.error;
+        }).catch(function (e) {
+            return Promise.resolve();
+        });
+    }).then(function () {
 
-                case 4:
-                    data = _context2.sent;
-
-                    message = data.message || data.error;
-                    _context2.next = 10;
-                    break;
-
-                case 8:
-                    _context2.prev = 8;
-                    _context2.t0 = _context2['catch'](1);
-
-                case 10:
-                    return _context2.abrupt('return', _boom2.default.create(response.status, message, data));
-
-                case 11:
-                case 'end':
-                    return _context2.stop();
-            }
-        }
-    }, _marked[1], this, [[1, 8]]);
+        return _boom2.default.create(response.status, message, data);
+    });
 }
